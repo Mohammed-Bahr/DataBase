@@ -166,7 +166,7 @@ SELECT `company`,
 
 -- now that we have this we can delete rows were row_num is greater than 2
 
-DELETE FROM layoffs_staging2
+DELETE FROM  
 WHERE row_num >= 2;
 
 
