@@ -284,3 +284,214 @@ print("-" * 40)
 
 
 
+# =================================================================================================================
+#                                       Matrix Multiplication 
+# =================================================================================================================
+
+# Matrix A: shape (3, 3)
+matrix1 = np.array([
+    [1, 2, 3],
+    [1, 2, 3],
+    [1, 2, 3]
+])
+
+# Matrix B: shape (3, 1)
+matrix2 = np.array([
+    [0],
+    [0],
+    [0]
+])
+
+# Shapes (conditions check)
+print("matrix1 shape:", matrix1.shape)  # (3, 3)
+print("matrix2 shape:", matrix2.shape)  # (3, 1)
+
+# Matrix multiplication (valid because 3 == 3)
+result = matrix1 @ matrix2
+
+print("Result shape:", result.shape)    # (3, 1)
+print("Result:")
+print(result)
+
+
+
+
+
+
+
+# =================================================================================================================
+#                                       Aggregate Functions  
+# =================================================================================================================
+
+# Create a NumPy 2D array
+arr = np.array([
+    [1, 2, 3],
+    [4, 5, 6]
+])
+
+# ---------------------------------
+# sum(): calculates the total sum
+# ---------------------------------
+
+np.sum(arr)
+# Adds all elements in the array
+# 1 + 2 + 3 + 4 + 5 + 6 = 21
+
+np.sum(arr, axis=0)
+# Adds elements column-wise
+# Column 0: 1 + 4 = 5
+# Column 1: 2 + 5 = 7
+# Column 2: 3 + 6 = 9
+
+np.sum(arr, axis=1)
+# Adds elements row-wise
+# Row 0: 1 + 2 + 3 = 6
+# Row 1: 4 + 5 + 6 = 15
+
+# then axis is the one who decide whether to work on rows (axis = 1) or columns (axis = 0)
+
+# ---------------------------------
+# mean(): calculates the average
+# ---------------------------------
+
+np.mean(arr)
+# Computes the average of all elements
+
+np.mean(arr, axis=0)
+# Average of each column
+
+np.mean(arr, axis=1)
+# Average of each row
+
+
+# ---------------------------------
+# max(): finds the maximum value
+# ---------------------------------
+
+np.max(arr)
+# Returns the largest value in the entire array
+
+np.max(arr, axis=0)
+# Maximum value in each column
+
+np.max(arr, axis=1)
+# Maximum value in each row
+
+
+# ---------------------------------
+# min(): finds the minimum value
+# ---------------------------------
+
+np.min(arr)
+# Returns the smallest value in the entire array
+
+np.min(arr, axis=0)
+# Minimum value in each column
+
+np.min(arr, axis=1)
+# Minimum value in each row
+
+
+# ---------------------------------
+# std(): standard deviation
+# Measures how spread out the values are
+# ---------------------------------
+
+np.std(arr)
+# Standard deviation of all elements
+
+np.std(arr, axis=0)
+# Standard deviation of each column
+
+np.std(arr, axis=1)
+# Standard deviation of each row
+
+
+# ---------------------------------
+# var(): variance
+# Square of the standard deviation
+# ---------------------------------
+
+np.var(arr)
+# Variance of all elements
+
+np.var(arr, axis=0)
+# Variance of each column
+
+np.var(arr, axis=1)
+# Variance of each row
+
+
+# ---------------------------------
+# prod(): product of elements
+# ---------------------------------
+
+np.prod(arr)
+# Multiplies all elements together
+
+np.prod(arr, axis=0)
+# Product of each column
+
+np.prod(arr, axis=1)
+# Product of each row
+
+# ==============================================================================================================
+
+
+# =================================================================================================================
+#                                                   Filtering  
+# =================================================================================================================
+
+# 1. SETUP: Create a sample array of data (numbers 10 through 100, step 10)
+data = np.array([10, 20, 30, 40, 50, 60, 70, 80, 90, 100])
+print('=' * 100)
+print(f"Original Array: {data}")
+print("-" * 30)
+
+# --- METHOD 1: Boolean Indexing (The most common way) ---
+
+# Step A: Create a boolean mask
+# We want to find numbers greater than 50.
+# This creates a new array of True/False values.
+mask = data > 50
+
+print(f"Boolean Mask (data > 50): \n{mask}")
+
+# Step B: Apply the mask to the original array
+# Python will only keep elements where the index in 'mask' is True.
+filtered_data = data[mask]
+
+print(f"Result (Filtered Data): {filtered_data}")
+print("-" * 30)
+
+
+# --- METHOD 2: Direct Filtering (Shorthand) ---
+
+# You don't need to create a variable for the mask first.
+# You can put the condition directly inside the brackets.
+evens_only = data[data % 20 == 0] # Filter for numbers divisible by 20
+
+print(f"Direct Filter (Divisible by 20): {evens_only}")
+print("-" * 30)
+
+
+# --- METHOD 3: Using np.where() ---
+
+# np.where() is useful if you want the INDICES of the valid items,
+# or if you want to replace values (If True do X, if False do Y).
+
+# Example: Get the indices (positions) where data is less than 40
+indices = np.where(data < 40)
+
+print(f"Indices where data < 40: {indices[0]}")
+print(f"Values at those indices: {data[indices]}")
+
+# Example: Replace values based on a filter
+# If data > 50, keep it. If not, replace it with 0.
+replaced_data = np.where(data > 50, data, 0)
+
+print(f"Replaced Data (Keep > 50, others become 0): {replaced_data}")
+
+
+
+
