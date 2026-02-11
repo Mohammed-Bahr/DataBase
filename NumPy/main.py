@@ -4,6 +4,7 @@ import numpy as np
 print("Numpy version: ", np.__version__)
 
 #                                         create a numpy array 
+#                                      Scalar Arithmetic Operations
 arr = np.array([1, 2, 3, 4, 5])
 print("Numpy array: ", arr)
  # multiply the array by 2
@@ -18,7 +19,10 @@ print("Numpy array divided by itself: ", arr / arr)
 print("Numpy array multiplied by itself: ", arr * arr)
  # divide the array by itself
 print("Numpy array divided by itself: ", arr / arr)
+ # power the array 
+print("Numpy array powered by itself: ", arr ** 3)
 
+#--------------------------------------------------------------------------------------------------
 # Print the type 
 print("Numpy array type: ", type(arr))
 
@@ -137,3 +141,146 @@ every_second_col = arr[:, ::2]
 #   [ 5  7],
 #   [ 9 11]
 # ]
+
+
+
+#--------------------------------------------------------------------------------------------------
+#                                          Array Manipulation
+#--------------------------------------------------------------------------------------------------
+
+# create a 2D array
+arr = np.array([90, 2.5, 30])
+print(" print square root of the array: ", np.sqrt(arr))
+print(" print the rounded array: ", np.round(arr)) # round to the nearest integer
+print(" print the floor array: ", np.floor(arr)) # round down to the nearest integer
+print(" print the ceil array: ", np.ceil(arr)) # round up to the nearest integer
+print(" print the square of the array: ", np.square(arr)) 
+# print(" print cube of the array: ", np.cube(arr))
+print(" print absolute of the array: ", np.abs(arr))
+print(" print sine of the array: ", np.sin(arr))
+print(" print cosine of the array: ", np.cos(arr))
+print(" print tangent of the array: ", np.tan(arr))
+print(" print exponential of the array: ", np.exp(arr))
+print(" print log of the array: ", np.log(arr)) 
+
+
+# =================================================================================================================
+#                           GUIDE: COMPARISON OPERATIONS IN PYTHON & NUMPY
+# =================================================================================================================
+
+# ------------------------------------------------------------------------------
+# PART 1: STANDARD PYTHON COMPARISONS (SCALARS)
+# ------------------------------------------------------------------------------
+# In standard Python, comparison operators return a single Boolean value (True/False).
+# These are the standard operators:
+# >   Greater than
+# <   Less than
+# >=  Greater than or equal to
+# <=  Less than or equal to
+# ==  Equal to
+#/ !=  Not equal to
+
+x = 10
+y = 5
+
+# Examples: 
+print(f"comparing between two numbers {x} , {y}")
+print(f"is {x} > {y} -> " , x > y)   # True
+print(f"is {x} == 10 -> ",x == 10) # True
+print(f"is {x} != {y} -> " , x != y)  # True
+
+# ------------------------------------------------------------------------------
+# PART 2: NUMPY ELEMENT-WISE COMPARISONS
+# ------------------------------------------------------------------------------
+# NumPy takes these standard operators and "vectorizes" them.
+# Instead of returning a single True/False, it performs the comparison on
+# EVERY element of the array and returns a new Boolean array.
+
+arr = np.array([10, 20, 30, 40, 50])
+
+# Check which elements are greater than 25
+result = arr > 25
+# Explanation: NumPy checks 10>25, 20>25, 30>25, etc.
+# Result: [False, False, True, True, True]
+print(result , f"this is the result of if {arr} elements > 25")
+# Check equality
+# Result: [False, False, True, False, False]
+equality_check = (arr == 30) 
+
+# ------------------------------------------------------------------------------
+# PART 3: COMPARISON BETWEEN TWO ARRAYS
+# ------------------------------------------------------------------------------
+# If you compare two arrays of the same shape, NumPy compares them position by position.
+
+a = np.array([1, 2, 3, 4])
+b = np.array([4, 2, 2, 4])
+
+# Compare a and b
+# 1 vs 4 (False), 2 vs 2 (True), 3 vs 2 (False), 4 vs 4 (True)
+# Result: [False, True, False, True]
+comparison = (a == b)
+print(comparison , f"this is the result of if {a} == {b} or not .")
+
+import numpy as np
+
+# ----------------------------------------------------------------------------
+
+# Sample arrays
+arr = np.array([10, 15, 25, 40, 50])
+data = np.array([5, 12, 67, 2, 45])
+
+# ----------------------------------------------------------------------------
+# Use & | ~ instead of and or
+# Parentheses are REQUIRED
+
+complex_filter = (arr > 20) & (arr < 45)
+filtered_arr = arr[complex_filter]
+
+print("BITWISE LOGIC (20 < x < 45):")
+print(filtered_arr)
+print("-" * 40)
+
+# ----------------------------------------------------------------------------
+# BOOLEAN MASKING (FILTERING DATA)
+# ----------------------------------------------------------------------------
+subset = data[data > 10]
+
+print("BOOLEAN MASKING (data > 10):")
+print(subset)
+print("-" * 40)
+
+# ----------------------------------------------------------------------------
+# AGGREGATE BOOLEAN CHECKS (ANY / ALL)
+# ----------------------------------------------------------------------------
+bools = np.array([True, False, True])
+
+has_any_true = np.any(bools)
+are_all_true = np.all(bools)
+is_arr_positive = np.all(arr > 0)
+
+print("AGGREGATE BOOLEANS:")
+print("Any True in bools?", has_any_true)
+print("All True in bools?", are_all_true)
+print("All values in arr positive?", is_arr_positive)
+print("-" * 40)
+
+# ----------------------------------------------------------------------------
+# AFE FLOAT COMPARISONS
+# ----------------------------------------------------------------------------
+f1 = 0.1 + 0.2
+f2 = 0.3
+
+safe_compare = np.isclose(f1, f2)
+
+print("FLOAT COMPARISON (SAFE CHECK):")
+print("0.1 + 0.2 ≈ 0.3 ?", safe_compare)
+print("-" * 40)
+
+
+#----------------------------------------------------------------------------
+#----------------------------------------------------------------------------
+#----------------------------------------------------------------------------
+#----------------------------------------------------------------------------
+
+
+
