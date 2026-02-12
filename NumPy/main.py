@@ -495,3 +495,56 @@ print(f"Replaced Data (Keep > 50, others become 0): {replaced_data}")
 
 
 
+
+
+import numpy as np
+
+# ======================================================================================================
+#                                   NUMPY RANDOM MODULE EXPLAINED
+# ======================================================================================================
+
+print("\n" + "=" * 50)
+print("NUMPY RANDOM NUMBER GENERATION")
+print("=" * 50)
+
+rng = np.random.default_rng()
+
+fruits = np.array(["apple", "banana", "cherry", "date", "elderberry"])
+print("=" * 40)
+print("random choice from array ")
+print("Original Array: ", fruits)
+print("-" * 30)
+print("Random choice: ", rng.choice(fruits))
+print("-" * 30)
+print("Random choices: ", rng.choice(fruits, size=3))
+print("-" * 30)
+print("Original Array: ", fruits)
+
+
+print("=" * 40)
+print("random float between 0 and 10")
+print("-" * 30)
+print (np.random.uniform(0, 10))
+print("-" * 30)
+print (np.random.uniform(0, 10, size=3))
+print("-" * 30)
+print (np.random.uniform(0, 10, size=(3, 3)))
+
+
+print("=" * 40)
+print("random int between 0 and 10 ")
+print("-" * 30)
+print (np.random.randint(0, 10))
+print("-" * 30)
+print (np.random.randint(0, 10, size=3))
+print("-" * 30)
+print (np.random.randint(0, 10, size=(3, 3)))
+print("-" * 30)
+
+
+# Explaining random.seed 
+print("random.seed is for making the random numbers reproducible means same random numbers")
+np.random.seed(0)
+print(np.random.randint(0, 10, size=3))
+np.random.seed(0)
+print(np.random.randint(0, 10, size=3))
