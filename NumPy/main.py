@@ -1,13 +1,36 @@
 import numpy as np
 
+# =================================================================================================================
+#                                         WHAT IS NUMPY?
+# =================================================================================================================
+# NumPy (Numerical Python) is the fundamental package for scientific computing in Python.
+# It provides:
+# 1. A powerful N-dimensional array object (ndarray).
+# 2. Sophisticated (broadcasting) functions.
+# 3. Tools for integrating C/C++ and Fortran code.
+# 4. Useful linear algebra, Fourier transform, and random number capabilities.
+#
+# Why use NumPy?
+# - Speed: NumPy arrays are faster than Python lists because they are stored in contiguous blocks of memory.
+# - Functionality: Optimized mathematical operations on arrays.
+
 # print the numpy version
 print("Numpy version: ", np.__version__)
 
 #                                         create a numpy array 
 #                                      Scalar Arithmetic Operations
+# np.array() creates a NumPy array. Unlike Python lists, NumPy arrays are:
+# 1. Homogeneous: All elements are of the same data type.
+# 2. Fixed Size: Size is determined at creation.
 arr = np.array([1, 2, 3, 4, 5])
 print("Numpy array: ", arr)
  # multiply the array by 2
+# VECTORIZATION:
+# Operations in NumPy are "vectorized". This means you can operate on the entire array 
+# at once without writing an explicit loop (like `for x in arr:`). 
+# This leverages low-level C optimizations for speed.
+# BROADCASTING:
+# When you do `arr * 2`, NumPy "broadcasts" the scalar `2` across the entire array `arr`.
 print("Numpy array multiplied by 2: ", arr * 2)
  # add the array to itself
 print("Numpy array added to itself: ", arr + arr)
@@ -54,6 +77,11 @@ print("Word: ", word)
 # --------------------------------------------------------------
 #                                                                   row                 column
 #                                            SLICING ARRAYS arr[start:stop:step , start:stop:step]
+# CRITICAL CONCEPT: VIEWS VS COPIES
+# Slicing a NumPy array returns a VIEW of the original array, not a copy.
+# This means if you modify the slice, you modify the original array!
+# To get a copy, you must explicitly use .copy().
+
 # Create a 2D NumPy array (matrix)
 arr = np.array([
     [1,  2,  3,  4],
@@ -145,8 +173,12 @@ every_second_col = arr[:, ::2]
 
 
 #--------------------------------------------------------------------------------------------------
-#                                          Array Manipulation
+#                                          Array Manipulation & UFuncs
 #--------------------------------------------------------------------------------------------------
+# Universal Functions (ufuncs):
+# These are mathematical functions that operate element-by-element on ndarrays.
+# They are implemented in C and are very fast.
+
 
 # create a 2D array
 arr = np.array([90, 2.5, 30])
@@ -178,7 +210,7 @@ print(" print log of the array: ", np.log(arr))
 # >=  Greater than or equal to
 # <=  Less than or equal to
 # ==  Equal to
-#/ !=  Not equal to
+# !=  Not equal to
 
 x = 10
 y = 5
@@ -307,6 +339,9 @@ print("matrix1 shape:", matrix1.shape)  # (3, 3)
 print("matrix2 shape:", matrix2.shape)  # (3, 1)
 
 # Matrix multiplication (valid because 3 == 3)
+# Rule for Matrix Multiplication (A @ B):
+# If A is (m, n) and B is (n, p), result is (m, p).
+# The inner dimensions (n) must match.
 result = matrix1 @ matrix2
 
 print("Result shape:", result.shape)    # (3, 1)
@@ -348,7 +383,11 @@ np.sum(arr, axis=1)
 # Row 0: 1 + 2 + 3 = 6
 # Row 1: 4 + 5 + 6 = 15
 
-# then axis is the one who decide whether to work on rows (axis = 1) or columns (axis = 0)
+# Understanding AXIS:
+# axis=0: "Combine the rows". The operation runs vertically down the columns.
+#         (Result size matches number of columns)
+# axis=1: "Combine the columns". The operation runs horizontally across the rows.
+#         (Result size matches number of rows)
 
 # ---------------------------------
 # mean(): calculates the average
@@ -507,6 +546,9 @@ print("\n" + "=" * 50)
 print("NUMPY RANDOM NUMBER GENERATION")
 print("=" * 50)
 
+# Using default_rng() is the modern, recommended way to generate random numbers in NumPy.
+# It creates a Generator instance, which is thread-safe and has better statistical properties
+# than the legacy `np.random.seed()` method.
 rng = np.random.default_rng()
 
 fruits = np.array(["apple", "banana", "cherry", "date", "elderberry"])
@@ -548,3 +590,24 @@ np.random.seed(0)
 print(np.random.randint(0, 10, size=3))
 np.random.seed(0)
 print(np.random.randint(0, 10, size=3))
+
+
+# Explaining random.default_rng.shuffle
+# 1. Initialize the generator
+rng = np.random.default_rng(seed=1) # Seed ensures reproducibility
+
+# 2. Shuffling a simple list-like array
+simple_arr = np.array([10, 20, 30, 40, 50])
+rng.shuffle(simple_arr)
+print(f"Shuffled 1D: {simple_arr}")
+
+# 3. Shuffling a 2D array (Shuffles ROWS only)
+matrix = np.array([[1, 1, 1], 
+                   [2, 2, 2], 
+                   [3, 3, 3]])
+
+# NOTE: shuffle modifies the array IN-PLACE.
+rng.shuffle(matrix)
+print("\nShuffled Matrix (rows swapped, content stayed same):")
+print(matrix) 
+
