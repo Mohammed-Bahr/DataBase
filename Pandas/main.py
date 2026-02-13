@@ -367,3 +367,161 @@ def LearnFilesReading ():
   
 
 LearnFilesReading()
+
+#=======================================================================================
+
+def AggregateFunctions():
+    print("Aggregate Functions")
+    df = pd.read_csv("/home/mohammed_bahr/Projects/DataBase/Pandas/people.csv")
+    print("the original data frame")
+    print(df)
+    print("\n" + "-"*30 + "\n")
+    print("the describe function")
+    print(df.describe())
+    print("\n" + "-"*30 + "\n")
+    print("the info function")
+    print(df.info())
+    print("\n" + "-"*30 + "\n")
+    print("the mean function")
+    print(df.mean(numeric_only=True))
+    print("\n" + "-"*30 + "\n")
+    print("the sum function")
+    print(df.sum(numeric_only=True))
+    print("\n" + "-"*30 + "\n")
+    print("the min function")
+    print(df.min(numeric_only=True))
+    print("\n" + "-"*30 + "\n")
+    print("the max function")
+    print(df.max(numeric_only=True))
+    print("\n" + "-"*30 + "\n")
+    print("the std function")
+    print(df.std(numeric_only=True))
+    print("\n" + "-"*30 + "\n")
+    print("the var function")
+    print(df.var(numeric_only=True))
+    print("\n" + "-"*30 + "\n")
+    print("the count function")
+    print(df.count())
+    print("\n" + "-"*30 + "\n")
+    print("the median function")
+    print(df.median(numeric_only=True))
+    print("\n" + "-"*30 + "\n") 
+    print("the mode function")
+    print(df.mode(numeric_only=True))
+    print("\n" + "-"*30 + "\n")
+    print("the quantile function")
+    print(df.quantile(numeric_only=True))
+    print("\n" + "-"*30 + "\n")
+
+
+    # نقوم بتجميع البيانات حسب عمود "Gender"
+    # ثم نختار عمود "User Id" لنقوم بالعد عليه (لأنه لا يحتوي على قيم فارغة عادة)
+    gender_count = df.groupby("Gender")["User Id"].count()
+    print(gender_count)
+    print("\n" + "-"*30 + "\n")
+
+    print ("\n or we can use : \n ")
+
+    gender_count_2 = df.groupby("Gender")
+    print(gender_count_2["User Id"].count())
+    print("\n" + "-"*30 + "\n")
+
+
+AggregateFunctions()
+
+
+#=======================================================================================
+import pandas as pd
+
+def DataCleaning():
+    # =================================================================
+    # DATA CLEANING DEFINITION
+    # =================================================================
+
+    # Data cleaning = the process of fixing or removing:
+    #                 incomplete, incorrect, or irrelevant data.
+
+    # Reality Check:
+    # ~75% of work done with Pandas is data cleaning. 
+    # "Garbage in, garbage out" — your model is only as good as your data.
+
+    # =================================================================
+    # KEY STEPS IN THE CLEANING PROCESS
+    # =================================================================
+
+    # 1. Handling Missing Values (NaN):
+    #    - Deciding whether to drop rows with missing data or fill them
+    #      with a logical value (mean, median, or zero).
+
+    # 2. Removing Duplicates:
+    #    - Identifying and deleting repeated entries that can skew results.
+
+    # 3. Data Type Conversion:
+    #    - Ensuring numbers are treated as integers/floats and dates 
+    #      are treated as datetime objects rather than strings.
+
+    # 4. Standardizing Formats:
+    #    - Fixing inconsistent strings (e.g., converting "N.Y.", "ny", 
+    #      and "New York" all to "New York").
+
+    # 5. Outlier Detection:
+    #    - Identifying values that are mathematically impossible or 
+    #      highly unlikely (e.g., an age of 250 or a negative price).
+    print("--- Data Cleaning Pipeline ---")
+
+    # 1. LOAD DATA
+    # Reads the raw CSV file into a Pandas DataFrame.
+    df = pd.read_csv("/home/mohammed_bahr/Projects/DataBase/Pandas/people.csv")
+    
+    # 2. INSPECT DATA STRUCTURE
+    # .info() is crucial: it shows data types (int, float, object) and 
+    # tells you how many non-null values exist, helping identify missing data immediately.
+    print("\n[Info]: Checking data types and null counts")
+    print(df.info())
+
+    # .describe() gives a statistical summary (mean, std, min, max) of numerical columns.
+    # It helps identify outliers (e.g., an age of 200).
+    print("\n[Describe]: Statistical summary")
+    print(df.describe())
+
+    # 3. HANDLING MISSING VALUES
+    # .isnull() creates a boolean mask (True/False) showing where data is missing.
+    # often used as df.isnull().sum() to count errors.
+    print("\n[Null Check]: Locating missing values")
+    print(df.isnull().sum()) # Added .sum() for better readability
+
+    # Option A: Remove rows with missing data
+    # Use this if you have abundant data and cannot guess the missing values.
+    print("\n[Drop NA]: Removing rows with missing values")
+    print(df.dropna()) # this from all the data 
+    print(df.dropna(subset=["First Name"])) # this for just these specific columns 
+
+    # Option B: Fill missing data
+    # Use this to retain rows by filling gaps with a default value (like 0 or the mean).
+    print("\n[Fill NA]: Filling missing values with 0")
+    print(df.fillna(0))
+
+    # 4. DATA CLEANING & TRANSFORMATION
+    # .drop_duplicates() removes identical rows, ensuring data integrity.
+    print("\n[Duplicates]: Removing duplicate rows")
+    print(df.drop_duplicates())
+
+    # .replace() is used to standardize values (e.g., fixing typos or standardizing categories).
+    print("\n[Replace]: Standardizing 'Male' to 'Female' (Example)")
+    print(df.replace("Male", "Female"))
+    df["Gender"] = df["Gender"].replace({
+        "Male": "MALE", 
+        "Female": "FEMALE"
+    })
+    print(df)
+ 
+    # .drop() removes specific columns that are not relevant to your analysis.
+    # axis=1 denotes columns; axis=0 denotes rows.
+    print("\n[Drop Column]: Removing the 'User Id' column")
+    print(df.drop("User Id", axis=1))
+
+    # .rename() fixes column names to be more code-friendly (e.g., removing spaces).
+    print("\n[Rename]: Renaming 'User Id' to 'User_Id'")
+    print(df.rename(columns={"User Id": "User_Id"}))
+
+DataCleaning()
