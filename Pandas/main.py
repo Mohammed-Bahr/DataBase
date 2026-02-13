@@ -1,8 +1,8 @@
-import pandas as pd 
-
+import pandas as pd  # Import the pandas library and alias it as 'pd' for standard usage
 print(pd.__version__)
 
-import pandas as pd  # Import the pandas library and alias it as 'pd' for standard usage
+
+#=======================================================================================
 
 def Series():
     """
@@ -109,7 +109,7 @@ def Series():
 Series()
 
 
-
+#=======================================================================================
 print ("\n" * 2)
 print ("=" * 70)
 print ("=" * 70)
@@ -117,58 +117,190 @@ print ("=" * 70)
 print ("\n" * 2)
 
 
+#=======================================================================================
 
 # DataFrame is pandas two dimensional array think of it like multiple columns in spread sheet or exacl table in database 
-def Data_Frame ():
+import numpy as np # Imported only to create "Not a Number" (missing) values for the example
+
+def DataFrames():
+    print("=== STEP 1: CREATION & BASICS (Review) ===")
     data = {
         "Name": ["John", "Anna", "Peter", "Linda"],
         "Age": [28, 22, 34, 42],
         "City": ["New York", "Paris", "London", "Berlin"]
     }
-
-    df = pd.DataFrame(data) # DataFrame is case sensitive because it is a constructor  not function 
-    print(df)
-    print ("\n")
-    print('-' * 30)
-    print ("\n")
-    data = {
-        "Name": ["John", "Anna", "Peter", "Linda"],
-        "Age": [28, 22, 34, 42],
-        "City": ["New York", "Paris", "London", "Berlin"]
-    }
-
-    df = pd.DataFrame(data , index=["a" , "b" , "c" , "d"] ) # DataFrame is case sensitive because it is a constructor  not function 
-    print(df)
-    print ("\n")
-    print('-' * 30)
-    print ("\n")
-
-    print (df.loc["c"]) # loc = location by labol this returns the value of the element at the given index  
-    print ("\n")
-    print ("-" * 30)
-    print ("\n")
-    print (df.iloc[2]) # iloc = location by index this returns the value of the element at the given index  
-    print ("\n")
-    print ("-" * 30)
-    print ("\n")
-
-    # adding a new column 
+    
+    # Create the DataFrame
+    df = pd.DataFrame(data, index=["a", "b", "c", "d"])
+    
+    # Add a column
     df["Country"] = ["USA", "France", "UK", "Germany"]
-    print(df)
-    print ("\n")
-    print ("-" * 30)
-    print ("\n")
-
-    # adding a new row 
-    new_row = {"Name": "John", "Age": 28, "City": "New York", "Country": "USA"}
-    df = pd.concat([df, pd.DataFrame([new_row])]) 
-    print(df)
-    print ("\n")
-    print ("-" * 30)
-    print ("\n")
     
+    # Add a row using concat
+    new_row = pd.DataFrame([{"Name": "Ahmed", "Age": 28, "City": "Dubai", "Country": "UAE"}], index=['e'])
+    df = pd.concat([df, new_row])
     
+    print(df)
+    print("\n" + "="*50 + "\n")
 
 
+    print("=== STEP 2: INSPECTING DATA (Mandatory) ===")
+    # Before processing, you must 'look' at your data without printing the whole thing.
+    
+    print("--- 1. Head (First 3 rows) ---")
+    print(df.head(3)) # Useful if your table has 1 million rows
+    
+    print("\n--- 2. Info (Data Types & Non-Nulls) ---")
+    # This is CRITICAL. It tells you if 'Age' is actually a number or stored as text (object).
+    print(df.info()) 
+    
+    print("\n--- 3. Describe (Statistics) ---")
+    # Gives you the mean, max, min, and standard deviation of numerical columns instantly.
+    print(df.describe()) 
+    print("\n" + "="*50 + "\n")
 
-Data_Frame()
+
+    print("=== STEP 3: DIRTY DATA & CLEANING (Mandatory) ===")
+    # Let's purposefully break the data to show how to fix it.
+    # We add a row with missing values (np.nan) and a duplicate row.
+    dirty_row = pd.DataFrame([
+        {"Name": "John", "Age": np.nan, "City": None, "Country": "USA"}, # Missing Age/City
+        {"Name": "John", "Age": 28, "City": "New York", "Country": "USA"} # Duplicate of row 'a'
+    ], index=['f', 'g'])
+    
+    df_dirty = pd.concat([df, dirty_row])
+    print("--- The Dirty Table (Note the NaN and Duplicates) ---")
+    print(df_dirty)
+    print("\n")
+
+    # 1. Dropping Duplicates
+    df_clean = df_dirty.drop_duplicates(subset=["Name", "Country"]) 
+    print("--- After drop_duplicates() ---")
+    print(df_clean)
+    print("\n")
+
+    # 2. Handling Missing Values (NaN)
+    # Option A: Drop rows with missing data
+    # df_clean = df_clean.dropna() 
+    
+    # Option B: Fill missing data (Better for keeping data)
+    # We fill missing numeric Age with the mean (average), and missing text with "Unknown"
+    values_to_fill = {"Age": df["Age"].mean(), "City": "Unknown"}
+    df_clean = df_clean.fillna(value=values_to_fill)
+    
+    print("--- After fillna() (Cleaning complete) ---")
+    print(df_clean)
+    print("\n" + "="*50 + "\n")
+
+
+    print("=== STEP 4: FILTERING & QUERYING (Mandatory) ===")
+    # This is like the SQL 'WHERE' clause.
+    
+    # Condition 1: People older than 30
+    print("--- Filter: Age > 30 ---")
+    print(df_clean[ df_clean["Age"] > 30 ])
+    print("\n")
+    
+    # Condition 2: Multiple conditions (AND requires '&', OR requires '|')
+    # Parentheses () are mandatory around each condition!
+    print("--- Filter: Age > 25 AND Country is USA ---")
+    condition = (df_clean["Age"] > 25) & (df_clean["Country"] == "USA")
+    print(df_clean[condition])
+    print("\n" + "="*50 + "\n")
+
+
+    print("=== STEP 5: SORTING & DROPPING (Mandatory) ===")
+    
+    # Sorting by values
+    # ascending=False means High to Low
+    print("--- Sorted by Age (Oldest to Youngest) ---")
+    print(df_clean.sort_values(by="Age", ascending=False))
+    print("\n")
+
+    # Dropping a Column we don't need
+    # axis=1 refers to Columns (vertical). axis=0 refers to Rows (horizontal).
+    print("--- Dropping the 'City' Column ---")
+    df_dropped = df_clean.drop("City", axis=1)
+    print(df_dropped)
+    print("\n" + "="*50 + "\n")
+
+
+    print("=== STEP 6: GROUPING & AGGREGATION (The most powerful feature) ===")
+    # This allows you to group data by a category and get stats (like a Pivot Table).
+    
+    # Let's add more data to make grouping meaningful
+    more_data = pd.DataFrame([
+        {"Name": "Sara", "Age": 25, "Country": "USA"},
+        {"Name": "Tom", "Age": 35, "Country": "UK"}
+    ])
+    df_group = pd.concat([df_dropped, more_data], ignore_index=True)
+
+    print("--- Data for Grouping ---")
+    print(df_group)
+    print("\n")
+
+    # Question: What is the average Age per Country?
+    # 1. Group by Country
+    # 2. Select the 'Age' column
+    # 3. Calculate the mean()
+    print("--- Average Age per Country ---")
+    print(df_group.groupby("Country")["Age"].mean())
+    print("\n")
+
+    # Count how many people are in each country
+    print("--- Count of people per Country ---")
+    print(df_group["Country"].value_counts())
+    print("\n" + "="*50 + "\n")
+    
+    print("Code finished successfully. (File save commented out to prevent error)")
+    print("\n" + "="*70 + "\n")
+
+# Run the DataFrames Guide
+DataFrames()
+#=======================================================================================
+
+
+def LearnFilesReading ():
+    # CSV FILES
+    print("CSV FILES")
+    df = pd.read_csv("/home/mohammed_bahr/Projects/DataBase/Pandas/people.csv")
+    print(df)
+    print("\n" + "-"*30 + "\n")
+    print("if You Want to print all data use df.to_string()")
+    print(df.to_string())
+    print("\n" + "-"*30 + "\n")
+    print("if You Want to print first 5 rows use df.head(5)")
+    print(df.head(5))
+    print("\n" + "-"*30 + "\n")
+    print("if You Want to print last 5 rows use df.tail(5)")
+    print(df.tail(5))
+    print("\n" + "-"*30 + "\n")
+
+    print("\n" + "="*70 + "\n")
+    # JSON FILES
+    print ("JSON FILES")
+    df_json = pd.read_json("/home/mohammed_bahr/Projects/DataBase/Pandas/titanic.json")
+    print(df_json)
+    print("\n" + "-"*30 + "\n")
+    print("if You Want to print all data use df.to_string()")
+    print(df_json.to_string())
+    print("\n" + "-"*30 + "\n")
+    print("if You Want to print first 5 rows use df.head(5)")
+    print(df_json.head(5))
+    print("\n" + "-"*30 + "\n")
+    print("if You Want to print last 5 rows use df.tail(5)")
+    print(df_json.tail(5))
+    print("\n" + "-"*30 + "\n")
+
+
+    print("\n" + "="*70 + "\n")
+
+    print("we will just working with csv but it's same process for all files")
+    print("\n" + "="*70 + "\n")
+    
+    print("First Name column from csv file")
+    print(df["First Name"])
+    print("\n" + "-"*30 + "\n")
+
+
+LearnFilesReading()
