@@ -294,7 +294,9 @@ def LearnFilesReading ():
 
 
     print("\n" + "="*70 + "\n")
-
+    # ============================================================================================================
+    #                                             Selection by Column
+    # ============================================================================================================
     print("we will just working with csv but it's same process for all files")
     print("\n" + "="*70 + "\n")
     
@@ -302,5 +304,66 @@ def LearnFilesReading ():
     print(df["First Name"])
     print("\n" + "-"*30 + "\n")
 
+
+    print("First Name and Phone and Gender -> ")
+    print(df[["First Name", "Phone", "Gender"]])
+    print("\n" + "-"*30 + "\n")
+
+
+    # ============================================================================================================
+    #                                             Selection by Rows
+    # ============================================================================================================
+
+    # loc[] -> Selection by Label
+    print("Selection by Label") # since we didn't assign andy indexing its counts from 0 to n by deafult 
+    print(df.loc[4])
+    print("\n" + "-"*30 + "\n")
+
+    # iloc[] -> Selection by Index
+    print("Selection by Index")
+    print(df.iloc[4])
+    print("\n" + "-"*30 + "\n")
+
+    # we can change its labol to be any column we want using index_col i
+    df_new = pd.read_csv("/home/mohammed_bahr/Projects/DataBase/Pandas/people.csv", index_col="First Name") # it will make the First Name column as index
+    print(df_new)
+    print("\n" + "-"*30 + "\n")
+    print(df_new.loc["Lindsey"])
+    print("\n" + "-"*30 + "\n")
+    print(df_new.iloc[4])
+    print("\n" + "-"*30 + "\n")
+
+    print("you can also select specific columns for one index row using loc or iloc")
+    print(df_new.loc["Lindsey", ["Gender","Phone",]])
+    print("\n" + "-"*30 + "\n")
+    print(df_new.iloc[4, [1, 2]])
+    print("\n" + "-"*30 + "\n")
+
+    print("you can also select specific number of rows and columns")
+    print(df.loc[0:9]) # remember that the last number is exclusive then it will return from 0 to 9 rows 
+    print("\n" + "-"*30 + "\n")
+    # iloc[start:end:step] -> step is the number of rows to skip
+    print(df_new.iloc[0:10:2]) # remember that the last number is exclusive then it will return from 0 to 10 rows 
+    print("\n" + "-"*30 + "\n")
+
+    # ============================================================================================================
+    #                                            Filtering -> Selection by Condition
+    # ============================================================================================================
+    print("Selection by Condition")
+    Engineers = df[df["Gender"]== "Female"]
+    target = df[df["Index"] > 500]
+    print(Engineers)
+    print(target)
+    print("\n" + "-"*30 + "\n")
+
+    print("you can also use multiple conditions like to be female and job title contains engineer")
+    # Select females whose job title contains the word "engineer"
+    female_engineers = df[
+        (df["Gender"] == "Female") & 
+        (df["Job Title"].str.strip().str.lower().str.contains("engineer"))
+    ]
+    print(female_engineers)
+    print("\n" + "-"*30 + "\n")
+  
 
 LearnFilesReading()
