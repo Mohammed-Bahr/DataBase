@@ -45,6 +45,14 @@ print("Numpy array divided by itself: ", arr / arr)
  # power the array 
 print("Numpy array powered by itself: ", arr ** 3)
 
+
+arr = np.array([1, 2, 3])
+
+new_arr = np.append(arr, 4)
+
+print(new_arr)
+# [1 2 3 4]
+
 #--------------------------------------------------------------------------------------------------
 # Print the type 
 print("Numpy array type: ", type(arr))
