@@ -22,7 +22,7 @@ def plot():
         ax.plot(months, product_b_sales, marker="s", linewidth=2.5,
                 color="#FF5722", label="Product B", markersize=7, linestyle="--")
 
-        # --- Fill area under the lines for visual appeal ---
+        # --- Fill area u`nder the lines for visual appeal ---
         ax.fill_between(months, product_a_sales, alpha=0.08, color="#2196F3")
         ax.fill_between(months, product_b_sales, alpha=0.08, color="#FF5722")
 
@@ -57,4 +57,13 @@ def plot():
         plt.tight_layout()
         plt.show()
 
-plot()
+
+def Grid():
+    x = np.array([1, 2, 3, 4, 5])
+    y = np.array([4, 5, 6, 7, 8])
+    plt.plot(x, y)
+    plt.grid(color='green', linestyle='--', linewidth=0.5, axis='y') # we can control the grid lines to be on x-axis or y-axis or both
+    plt.show()
+
+Grid()
+
